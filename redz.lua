@@ -7,14 +7,12 @@ local Players = game:GetService("Players")
 local CoreGui = game:GetService("CoreGui")
 local Player = Players.LocalPlayer
 
-local LibraryRawUrl = "https://raw.githubusercontent.com/hacked-prototype/RedzLibV4/main"
-
 local redzLib = {
   info = {
     Version = "v1.2.2",
     PlaceName = MarketplaceService:GetProductInfo(game.PlaceId).Name
   },
-  Themes = loadstring(game:HttpGet(LibraryRawUrl .. "/Themes.lua"))(),
+  Themes = loadstring(game:HttpGet("https://raw.githubusercontent.com/wx-sources/RedzLibV4/main/Themes.lua"))(),
   Flags = {},
   Save = {
     Theme = "Default",
@@ -22,7 +20,7 @@ local redzLib = {
     ScrollSize = 160,
     TransparencyHub = 0.1
   },
-  Icons = loadstring(game:HttpGet(LibraryRawUrl .. "/Icons.lua"))() --[[
+  Icons = loadstring(game:HttpGet("https://raw.githubusercontent.com/wx-sources/RedzLibV4/main/Icons.lua"))() --[[
     I found this source on fluent but I don't know who created it
     source -- https://github.com/dawid-scripts/Fluent/blob/master/src/Icons.lua --
   ]],
@@ -642,7 +640,7 @@ function redzLib:MakeWindow(Configs)
     Size = UDim2.fromScale(0.35, 0.20),
     Position = UDim2.fromScale(0.1, 0.65),
     BackgroundColor3 = Theme["Color Hub 2"],
-    TextColor3 = Color3.fromRGB(0, 200, 0),
+    TextColor3 = Color3.fromRGB(200, 0, 0),
     Font = Theme["Font"][2],
     TextSize = 18
   }, {
@@ -655,7 +653,7 @@ function redzLib:MakeWindow(Configs)
     Position = UDim2.fromScale(0.9, 0.65),
     AnchorPoint = Vector2.new(1, 0),
     BackgroundColor3 = Theme["Color Hub 2"],
-    TextColor3 = Color3.fromRGB(200, 0, 0),
+    TextColor3 = Color3.fromRGB(0, 200, 0),
     Font = Theme["Font"][2],
     TextSize = 18
   }, {
