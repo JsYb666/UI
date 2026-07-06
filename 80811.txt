@@ -1,2 +1,2 @@
-local repo = "https://raw.githubusercontent.com/deividcomsono/Obsidian/main/"
-local Library = loadstring(game:HttpGet(repo .. "Library.lua"))()
+_G.repo = "https://raw.githubusercontent.com/deividcomsono/Obsidian/main/"
+_G.Library = loadstring(game:HttpGet(repo .. "Library.lua"))()
