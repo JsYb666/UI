@@ -4,7 +4,7 @@ end)
 local clonefunction = (clonefunction or copyfunction or function(func) 
     return func 
 end)
-
+--shit
 local HttpService: HttpService = cloneref(game:GetService("HttpService"))
 local isfolder, isfile, listfiles = isfolder, isfile, listfiles
 
