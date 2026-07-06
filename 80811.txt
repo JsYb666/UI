@@ -11718,8 +11718,7 @@ function Library:Unload()
     Library.KeybindFrame = nil
     Library.KeybindContainer = nil
 
-    getgenv().Library = nil
+    _G.Library = nil
 end
-
-getgenv().Library = Library
+_G.Library = Library
 return Library
