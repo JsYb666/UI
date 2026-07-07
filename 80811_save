@@ -4,7 +4,7 @@ end)
 local clonefunction = (clonefunction or copyfunction or function(func) 
     return func 
 end)
---shit
+
 local HttpService: HttpService = cloneref(game:GetService("HttpService"))
 local isfolder, isfile, listfiles = isfolder, isfile, listfiles
 
@@ -931,8 +931,3 @@ end
 
 SaveManager:BuildFolderTree()
 return SaveManager
-
-local repo = "https://raw.githubusercontent.com/deividcomsono/Obsidian/main/"
-local Library = loadstring(game:HttpGet(repo .. "Library.lua"))()
-local ThemeManager = loadstring(game:HttpGet(repo .. "addons/ThemeManager.lua"))()
-local SaveManager = loadstring(game:HttpGet(repo .. "addons/SaveManager.lua"))()
