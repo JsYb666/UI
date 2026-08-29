@@ -1,2 +1,2 @@
 local player = game.Players.LocalPlayer
-player:Kick("你已被踢出游戏")
+player:Kick("请使用正版")
