@@ -1,0 +1,94 @@
+local Players = game:GetService("Players")
+local Tween = game:GetService("TweenService")
+local CoreGui = game:GetService("CoreGui")
+
+local parent = pcall(function() return CoreGui end) and CoreGui or Players.LocalPlayer:WaitForChild("PlayerGui")
+
+local gui = Instance.new("ScreenGui")
+gui.Name = "Notifier"
+gui.ResetOnSpawn = false
+gui.IgnoreGuiInset = true
+gui.Parent = parent
+
+local W, H, GAP, Y = 300, 70, 10, 20
+local MAX = 5
+local active, queue, running = {}, {}, false
+
+local function pos(i)
+    return UDim2.new(1, -W - 20, 0, Y + (i - 1) * (H + GAP))
+end
+
+local function show(title, text, dur)
+    local f = Instance.new("Frame")
+    f.Size = UDim2.new(0, W, 0, H)
+    f.Position = UDim2.new(1, W + 20, 0, Y)
+    f.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
+    f.BackgroundTransparency = 0.1
+    f.BorderSizePixel = 0
+    f.Parent = gui
+
+    Instance.new("UICorner", f).CornerRadius = UDim.new(0, 8)
+
+    local s = Instance.new("UIStroke", f)
+    s.Color = Color3.fromRGB(80, 80, 100)
+
+    local t = Instance.new("TextLabel", f)
+    t.Size = UDim2.new(1, -20, 0, 25)
+    t.Position = UDim2.new(0, 10, 0, 8)
+    t.BackgroundTransparency = 1
+    t.Text = title
+    t.TextColor3 = Color3.new(1, 1, 1)
+    t.TextXAlignment = Enum.TextXAlignment.Left
+    t.Font = Enum.Font.GothamBold
+    t.TextSize = 18
+    t.TextTruncate = Enum.TextTruncate.AtEnd
+
+    local d = Instance.new("TextLabel", f)
+    d.Size = UDim2.new(1, -20, 0, 30)
+    d.Position = UDim2.new(0, 10, 0, 33)
+    d.BackgroundTransparency = 1
+    d.Text = text
+    d.TextColor3 = Color3.fromRGB(200, 200, 210)
+    d.TextXAlignment = Enum.TextXAlignment.Left
+    d.TextYAlignment = Enum.TextYAlignment.Top
+    d.Font = Enum.Font.Gotham
+    d.TextSize = 14
+    d.TextWrapped = true
+
+    table.insert(active, f)
+    Tween:Create(f, TweenInfo.new(1), { Position = pos(#active) }):Play()
+
+    task.delay(dur, function()
+        for i, v in ipairs(active) do
+            if v == f then table.remove(active, i) break end
+        end
+
+        local out = Tween:Create(f, TweenInfo.new(1), { Position = UDim2.new(1, W + 20, 0, f.Position.Y.Offset) })
+        out:Play()
+        out.Completed:Connect(function() f:Destroy() end)
+
+        for i, v in ipairs(active) do
+            Tween:Create(v, TweenInfo.new(0.7), { Position = pos(i) }):Play()
+        end
+    end)
+end
+
+local function pump()
+    if running then return end
+    running = true
+    task.spawn(function()
+        while #queue > 0 do
+            while #active >= MAX do task.wait(0.1) end
+            local n = table.remove(queue, 1)
+            show(n[1], n[2], n[3])
+            task.wait(0.1)
+        end
+        running = false
+    end)
+end
+
+local function notify(title, text, dur)
+    table.insert(queue, { title, text, dur})
+    pump()
+end
+--notify("示例", "示例", 5)
