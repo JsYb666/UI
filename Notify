@@ -1,8 +1,19 @@
 local Players = game:GetService("Players")
 local Tween = game:GetService("TweenService")
-local CoreGui = game:GetService("CoreGui")
 
-local parent = pcall(function() return CoreGui end) and CoreGui or Players.LocalPlayer:WaitForChild("PlayerGui")
+local parent
+if gethui then
+    parent = gethui()
+else
+    local ok, cg = pcall(function()
+        local c = game:GetService("CoreGui")
+        local t = Instance.new("Folder")
+        t.Parent = c
+        t:Destroy()
+        return c
+    end)
+    parent = ok and cg or Players.LocalPlayer:WaitForChild("PlayerGui")
+end
 
 local gui = Instance.new("ScreenGui")
 gui.Name = "Notifier"
@@ -56,14 +67,14 @@ local function show(title, text, dur)
     d.TextWrapped = true
 
     table.insert(active, f)
-    Tween:Create(f, TweenInfo.new(1), { Position = pos(#active) }):Play()
+    Tween:Create(f, TweenInfo.new(0.7), { Position = pos(#active) }):Play()
 
     task.delay(dur, function()
         for i, v in ipairs(active) do
             if v == f then table.remove(active, i) break end
         end
 
-        local out = Tween:Create(f, TweenInfo.new(1), { Position = UDim2.new(1, W + 20, 0, f.Position.Y.Offset) })
+        local out = Tween:Create(f, TweenInfo.new(0.7), { Position = UDim2.new(1, W + 20, 0, f.Position.Y.Offset) })
         out:Play()
         out.Completed:Connect(function() f:Destroy() end)
 
@@ -91,4 +102,5 @@ local function notify(title, text, dur)
     table.insert(queue, { title, text, dur})
     pump()
 end
---notify("示例", "示例", 5)
+
+notify("示例", "示例", 5)
