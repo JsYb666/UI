@@ -1,10 +1,12 @@
 local Players = game:GetService("Players")
 local Tween = game:GetService("TweenService")
 
-local parent
-if gethui then
-    parent = gethui()
-else
+local function getParent()
+    if type(gethui) == "function" then
+        local ok, r = pcall(gethui)
+        if ok and r then return r end
+    end
+
     local ok, cg = pcall(function()
         local c = game:GetService("CoreGui")
         local t = Instance.new("Folder")
@@ -12,14 +14,16 @@ else
         t:Destroy()
         return c
     end)
-    parent = ok and cg or Players.LocalPlayer:WaitForChild("PlayerGui")
+    if ok and cg then return cg end
+
+    return Players.LocalPlayer:WaitForChild("PlayerGui")
 end
 
 local gui = Instance.new("ScreenGui")
 gui.Name = "Notifier"
 gui.ResetOnSpawn = false
 gui.IgnoreGuiInset = true
-gui.Parent = parent
+gui.Parent = getParent()
 
 local W, H, GAP, Y = 300, 70, 10, 20
 local MAX = 5
@@ -99,7 +103,7 @@ local function pump()
 end
 
 local function notify(title, text, dur)
-    table.insert(queue, { title, text, dur})
+    table.insert(queue, { title, text, dur })
     pump()
 end
 
